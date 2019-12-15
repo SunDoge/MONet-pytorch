@@ -655,8 +655,12 @@ class ComponentVAE(nn.Module):
             nn.ReLU(True),
             nn.Conv2d(32, input_nc + 1, 1),
         )
-        self._bg_logvar = 2 * torch.tensor(0.09).log()
-        self._fg_logvar = 2 * torch.tensor(0.11).log()
+        # self._bg_logvar = 2 * torch.tensor(0.09).log()
+        # self._fg_logvar = 2 * torch.tensor(0.11).log()
+        _bg_logvar = 2 * torch.tensor(0.09).log()
+        _fg_logvar = 2 * torch.tensor(0.11).log()
+        self.register_buffer('_bg_logvar', _bg_logvar)
+        self.register_buffer('_fg_logvar', _fg_logvar)
 
     @staticmethod
     def reparameterize(mu, logvar):
