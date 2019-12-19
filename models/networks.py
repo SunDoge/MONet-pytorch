@@ -657,8 +657,8 @@ class ComponentVAE(nn.Module):
         )
         # self._bg_logvar = 2 * torch.tensor(0.09).log()
         # self._fg_logvar = 2 * torch.tensor(0.11).log()
-        _bg_logvar = 2 * torch.tensor(0.09).log()
-        _fg_logvar = 2 * torch.tensor(0.11).log()
+        _bg_logvar = 2 * torch.tensor([0.09]).log()
+        _fg_logvar = 2 * torch.tensor([0.11]).log()
         self.register_buffer('_bg_logvar', _bg_logvar)
         self.register_buffer('_fg_logvar', _fg_logvar)
 

@@ -91,12 +91,16 @@ class MONetModel(BaseModel):
             # Get component and mask reconstruction, as well as the z_k parameters
             m_tilde_k_logits, x_mu_k, x_logvar_k, z_mu_k, z_logvar_k = self.netCVAE(self.x, log_m_k, k == 0)
 
+            # 每个gpu上的模型都会返回一个x_logvar_k，但是我们只要一个
+            x_logvar_k = x_logvar_k[0]
+
             # KLD is additive for independent distributions
             self.loss_E += -0.5 * (1 + z_logvar_k - z_mu_k.pow(2) - z_logvar_k.exp()).sum()
 
             m_k = log_m_k.exp()
             x_k_masked = m_k * x_mu_k
 
+            # import ipdb; ipdb.set_trace()
             # Exponents for the decoder loss
             b_k = log_m_k - 0.5 * x_logvar_k - (self.x - x_mu_k).pow(2) / (2 * x_logvar_k.exp())
             b.append(b_k.unsqueeze(1))
